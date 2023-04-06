@@ -1,25 +1,49 @@
 import React from 'react'
 import { API_URL } from '../Config'
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux'
+import moment from 'moment/moment'
+import axios from 'axios'
 
-const ImageDetailed = ({data}) => {
-     
-    
+const ImageDetailed = ({ data, user, thumbs }) => {
+
+const toLarge =async()=>{
+    window.open(`${API_URL}${thumbs?.Large}`)
+   
+}
+const toMedium =()=>{
+    window.open(`${API_URL}${thumbs?.Medium}`)
+}
+const toSmall =()=>{
+    window.open(`${API_URL}${thumbs?.Small}`)
+}
 
     return (
         <div>
             <div className='bg-white w-fit p-2 rounded-lg shadow shadow-black shadow-lg  mx-auto mt-10'>
 
                 <div>
-                    <img className='w-full object-cover rounded-md h-[50vh] ' src={`${API_URL}/${data.imagePath}`} alt="" />
+                    <img className='w-full object-cover rounded-md h-[50vh] ' src={`${API_URL}/${data?.imagePath}`} alt="" />
                 </div>
                 <div className='flex mt-2 px-1 gap-2'>
-                    <button className='border w-fit px-3 border-stone-300 items-center font-medium text-sm rounded-md py-1  text-stone-600'>Large</button>
-                    <button className='border w-fit px-3 border-stone-300 items-center font-medium text-sm rounded-md py-1  text-stone-600'>Medium</button>
-                    <button className='border w-fit px-3 border-stone-300 items-center font-medium text-sm rounded-md py-1  text-stone-600'>Thumbnail</button>
+                    <button  onClick={toLarge} className='border w-fit flex px-3 border-stone-300 items-center font-medium text-sm rounded-md py-1  text-stone-600'>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                        </svg>
+                        Large</button>
+                    <button onClick={toMedium}  className='flex border w-fit px-3 border-stone-300 items-center font-medium text-sm rounded-md py-1  text-stone-600'>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                        </svg>
+                        Medium</button>
+                    <button onClick={toSmall}  className='flex border w-fit px-3 border-stone-300 items-center font-medium text-sm rounded-md py-1  text-stone-600'>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                        </svg>
+                        Thumbnail</button>
                 </div>
+                <div className='flex px-3 mt-2 capitalize text-sm text-stone-700'><p>Uploaded by {user.Name} on {moment(data?.createdAt).format('ll')} </p></div>
             </div>
-           
+
 
         </div>
     )

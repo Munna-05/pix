@@ -5,16 +5,24 @@ import axios from 'axios'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { injectStyle } from "react-toastify/dist/inject-style";
+import { useSelector, useDispatch } from 'react-redux'
+import { useEffect } from 'react';
+import { addImage } from '../Redux/Slice/UserUploaded';
+import { useNavigate } from 'react-router';
+import moment from 'moment';
+
 
 injectStyle()
 
 
 const ProfileImageList = ({ username, id, apikey }) => {
-    const array = [1, 2, 3, 4, 5, 6, 6, 7, 1, 2, 3, 4, 5, 6, 6, 7, 1, 2, 3, 4, 5, 6, 6, 7, 1, 2, 3, 4, 5, 6]
+    const [Images, setImages] = useState([])
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const userUploads = useSelector(state => state.UserProfile.Images)
 
     const formData = new FormData()
-    const [image, setImage] = useState()
-
     const upload = () => {
 
         axios.post(`${API_URL}/upload/${id}`, formData, {
@@ -23,7 +31,10 @@ const ProfileImageList = ({ username, id, apikey }) => {
             }
 
         }).then((res) => {
-            toast.success(res.data, { position: toast.POSITION.TOP_RIGHT, autoClose: 1000, hideProgressBar: true, closeButton: false, closeOnClick: true })
+
+            dispatch(addImage(res.data))
+
+            toast.success("Image Uploaded", { position: toast.POSITION.TOP_RIGHT, autoClose: 1000, hideProgressBar: true, closeButton: false, closeOnClick: true })
             formData.delete("image")
 
         }).catch(err => {
@@ -31,6 +42,15 @@ const ProfileImageList = ({ username, id, apikey }) => {
             toast.error(err.response.data, { position: toast.POSITION.TOP_RIGHT, autoClose: 1000, hideProgressBar: true, closeButton: false, closeOnClick: true })
         });
     }
+
+
+    useEffect(() => {
+        setImages(userUploads)
+    }, [userUploads])
+
+   
+
+    console.log(Images)
     return (
         <div className='pb-16'>
             <ToastContainer
@@ -60,13 +80,16 @@ const ProfileImageList = ({ username, id, apikey }) => {
                 </div>
             </div>
 
-            <div className=' container  mx-auto grid grid-cols-10 '>
+            <div className=' container  mx-auto grid gap-2  grid-cols-4  '>
                 {
-                    array.map((res, i) => {
+                    Images?.map((res, i) => {
                         return (
-                            <motion.div className='cursor-pointer ring-stone-400 border' initial={{ opacity: 0, scale: 0.7 }} animate={{ opacity: 1, scale: 1, transition: { delay: i / 9, type: 'spring' } }}>
-                                <motion.img whileHover={{ filter: "brightness(120%)" }} src="https://images.pexels.com/photos/1366630/pexels-photo-1366630.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="" />
+
+                            <motion.div onClick={()=>navigate(`/details/${res._id}/${res.userId}`)} className='cursor-pointer ring-stone-400 border' initial={{ opacity: 0, scale: 0.7 }} animate={{ opacity: 1, scale: 1, transition: { delay: i / 9, type: 'spring' } }}>
+                                <motion.img whileHover={{ filter: "brightness(120%)" }} src={`${API_URL}/${res.imagePath}`} className='w-full h-full mx-auto  object-cover mx-auto bg-white p-2' alt="" />
+                                
                             </motion.div>
+                           
                         )
                     })
                 }
