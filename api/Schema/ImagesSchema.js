@@ -8,6 +8,9 @@ const ImageSchema = mongoose.Schema({
     userId:{
         type:String,
         required:true
+    },
+    thumbs:{
+        type:Object
     }
 },{timestamps:true})
 

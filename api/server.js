@@ -11,21 +11,25 @@ import { DB_URL, PORT } from './Config.js';
 app.use(cors())
 app.use(express.json())
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.urlencoded({ extended: true }))
 dotenv.config()
 
 
 const server = app.listen(PORT, () => {
     console.log(`server started `)
-    mongoose.connect(`mongodb+srv://munna:701223mongo@cluster0.5r0vsmz.mongodb.net/?retryWrites=true&w=majority`).then(() => {
-        console.log("DataBase connection successfull") 
-    }).catch((err) => {
-        console.log('Connection Error',err)
-    })
+    try {
+        mongoose.connect(`mongodb+srv://munna:701223mongo@cluster0.5r0vsmz.mongodb.net/?retryWrites=true&w=majority`).then(() => {
+            console.log("DataBase connection successfull")
+        }).catch((err) => {
+            console.log(err,'Connection Error - - -')
+        })
+    } catch (error) {
+        console.log(error,"error")
+    } 
 
-}) 
+})
 
-app.use('/admin', adminController)
-app.use('/', userRoute) 
-app.use('/Uploads', express.static('Uploads'));
-    
+app.use('/admin', adminController) 
+app.use('/', userRoute)
+app.use('/Uploads', express.static('Uploads')); 
+ 
