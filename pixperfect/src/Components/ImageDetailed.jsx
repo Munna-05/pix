@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { API_URL } from '../Config'
 import { useSelector } from 'react-redux'
 import moment from 'moment/moment'
@@ -6,6 +6,16 @@ import axios from 'axios'
 import { motion } from 'framer-motion'
 
 const ImageDetailed = (props) => {
+
+    const [user,setUser] = useState({})
+    useEffect(()=>{
+        if(props?.images){
+            axios.get(`${API_URL}/findUser/${props?.images?.userId}`).then((res)=>{
+                console.log("user details",res.data)
+                setUser(res.data)
+        })
+        }
+    },[props])
 console.log("img",props?.images)
     const toLarge = async (data) => {
         console.log(data.thumbs.thumbnails.Large)
@@ -44,7 +54,7 @@ console.log("img",props?.images)
                                 </svg>
                                 Thumbnail</button>
                         </div>
-                        {/* <div className='flex px-3 mt-2 capitalize text-sm text-stone-700'><p>Uploaded by {user.Name} on {moment(data?.createdAt).format('ll')} </p></div> */}
+                        <div className='flex px-3 mt-2 capitalize text-sm text-stone-700'><p>Uploaded by {user?.Name} on {moment(props?.images?.createdAt).format('ll')} </p></div>
                     </motion.div>
              
 

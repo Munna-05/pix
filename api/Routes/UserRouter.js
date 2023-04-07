@@ -41,7 +41,7 @@ router.post('/signup', User_Controller.signup)
 router.post('/login', User_Controller.login)
 //user
 router.get('/findUser/:id', User_Controller.get_user)
-
+  
 
 //images
 router.post('/upload/:id', verifyKey, upload.single('image'), User_Controller.ImageUpload)
@@ -54,7 +54,7 @@ router.get('/userprofile/:id', User_Controller.getImagesByUser)
 
 
 
-
+ 
 
 
 export default router;

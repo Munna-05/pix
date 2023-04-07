@@ -56,7 +56,7 @@ const SignupComponent = () => {
                            <input onChange={(e)=>setRepass(e.target.value)} type="password" className='ring-1 ring-stone-600 px-3 text-sm  outline-none w-2/3 h-8 rounded-lg my-2' placeholder='Re-Enter your Password' />
                        </div>
                        <div className='my-6'>
-                           <button onClick={()=>Signup()} className='bg-[#6a87a5] lg:w-60 w-40 h-8 text-stone-100 hover:bg-blue-900  rounded'>Singup</button>
+                           <button onClick={()=>Signup()} className='bg-[#6a87a5] lg:w-60 w-40 h-8 text-stone-100 hover:bg-blue-900  rounded'>Signup</button>
                        </div>
                        <div className='my-3 mb-6'>
                            <span className='text-sm text-stone-600'>
