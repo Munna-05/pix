@@ -30,7 +30,7 @@ function App() {
           <Route path='/signup' element={<Signup />} />
           <Route path='/home' element={<Home />} />
           <Route path='/profile' element={<Profile />} />
-          <Route path='/details/:id/:userId' element={<ImageDetails />} />
+          <Route path='/details/:id' element={<ImageDetails />} />
         </Routes>
       </BrowserRouter>
     </div>

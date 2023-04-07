@@ -17,12 +17,15 @@ const Profile = () => {
     useEffect(()=>{
         if (!userdetails) navigate('/')
         setUser(userdetails)
-        if(!userUploads){
-            axios.get(`${API_URL}/images/${userdetails?._id}`).then((res)=>{
-                console.log(res.data)
+        
+           if(!userUploads){
+            axios.get(`${API_URL}/userprofile/${userdetails?._id}`).then((res)=>{
+                console.log(userUploads?._id)
+                console.log("user images ",res.data)
                 dispatch(addImage(res.data))   
             })
-        }
+           }
+        
     }, [])
 
     return (

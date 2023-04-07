@@ -16,8 +16,11 @@ const DBC = {
 
     //image
     findAllImages: async () => await Images.find().sort({ createdAt: -1 }),
+
     findImagesByUser: async (id) => await Images.find({ userId: id }).sort({ createdAt: -1 }),
-    findByImageId:async(id)=>await Images.findOne({_id:id}), 
+
+    findByImageId:async(id)=>await Images.findOne({_id:id}),
+
     findAndUpdateWithThumb: async (id, data) => {
         try {
             const res = await Images.findOneAndUpdate({ _id: id }, { thumbs: data }, { new: true })

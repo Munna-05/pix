@@ -3,10 +3,11 @@ import axios from 'axios'
 import { API_URL } from '../../Config';
 
 
-export const createUser = createAsyncThunk('users/createUser', async (userData) => {
-    const response = await axios.post(`${API_URL}/signup`, userData)
-    console.log(response)
-    return response.data;
+export const createUser = createAsyncThunk('users/createUser', async (userData,thunkApi) => {
+    const response = await axios.post(`${API_URL}/signup`, userData).catch(err => {
+        return thunkApi.rejectWithValue({ message: err.response.data })
+    })
+    return response;
 });
 
 export const loginUser = createAsyncThunk('users/loginUser', async (userData, thunkApi) => {
@@ -50,11 +51,11 @@ export const UserSlice = createSlice({
         },
         [createUser.fulfilled]: (state, action) => {
             state.isLoading = false
-            state.contents = action.payload
+            state.contents = action.payload.data
         },
         [createUser.rejected]: (state, action) => {
             state.isLoading = false
-            state.error = action.error.message
+            state.error = action.payload.message
         },
 
         //login
@@ -67,7 +68,6 @@ export const UserSlice = createSlice({
         },
         [loginUser.rejected]: (state, action) => {
             state.isLoading = false;
-            console.log('reducer', action)
             state.error = action.payload.message
         },
         //finduser

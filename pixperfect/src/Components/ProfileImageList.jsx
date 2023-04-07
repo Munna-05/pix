@@ -85,7 +85,7 @@ const ProfileImageList = ({ username, id, apikey }) => {
                     Images?.map((res, i) => {
                         return (
 
-                            <motion.div onClick={()=>navigate(`/details/${res._id}/${res.userId}`)} className='cursor-pointer ring-stone-400 border' initial={{ opacity: 0, scale: 0.7 }} animate={{ opacity: 1, scale: 1, transition: { delay: i / 9, type: 'spring' } }}>
+                            <motion.div onClick={()=>navigate(`/details/${res._id}`)} className='cursor-pointer ring-stone-400 border' initial={{ opacity: 0, scale: 0.7 }} animate={{ opacity: 1, scale: 1, transition: { delay: i / 9, type: 'spring' } }}>
                                 <motion.img whileHover={{ filter: "brightness(120%)" }} src={`${API_URL}/${res.imagePath}`} className='w-full h-full mx-auto  object-cover mx-auto bg-white p-2' alt="" />
                                 
                             </motion.div>

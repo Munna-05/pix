@@ -11,10 +11,13 @@ const ImgSlice = createSlice({
         addImage: (state,action) => {
             state.Images = action.payload;
             state.error = null;
+        },
+        remove:(state)=>{
+            state.Images = null;
         }
     },
 })
 
-export const { addImage } = ImgSlice.actions;
+export const { addImage ,remove} = ImgSlice.actions;
 
 export default ImgSlice.reducer;

@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import { API_URL } from '../Config'
 const ImageDetails = () => {
-  const { id,userId } = useParams()
+  const { id } = useParams()
   const [user, setUser] = useState({})
   const allImages = useSelector(state => state.Images.Images)
   const [image,setImage] = useState({})
@@ -16,21 +16,19 @@ const ImageDetails = () => {
 
     axios.get(`${API_URL}/image/${id}`).then((res) => {
       setImage(res.data)
+      // console.log(res.data)
       
     })
 
    
-      axios.get(`${API_URL}/findUser/${userId}`).then((res) => {
-        setUser(res.data)
-
-      })
+     
     
   }, [])
   return (
     <div>
-      <ImageDetailed data={image} user={user} thumbs={image?.thumbs?.thumbnails} />
+      <ImageDetailed images={image?image:null}  />
     </div>
-  )
+  ) 
 }
 
 export default ImageDetails

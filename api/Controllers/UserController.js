@@ -5,18 +5,36 @@ import { createError } from "../Helpers/Error.js";
 import path from "path";
 import crypto from 'crypto'
 import sharp from "sharp";
+import {v4} from 'uuid';
+
 
 const User_Controller = {
     signup: async (req, res, next) => {
 
+        
 
+        if(!req.body.Email || !req.body.Name || !req.body.Password)
+        {
+            return res.status(400).json('Enter All Details')
+        }
+        else if(req.body.Password.length<6)
+        {
+            return res.status(400).json("Password must have minimum 6 characters")
+
+        }
+        else if(req.body.Password != req.body.Repassword)
+        {
+            return res.status(400).json("Password Doesn't match")
+
+        }
+        
+        
         const input = req.body
-        //req.body)
-        //checking if there is any existing user using the same email address 
+        //checking if there is any existing user using the same email address  
         const checkEmail = await Users.findOne({ Email: input.Email })
         if (checkEmail) {
-            //"existing", existing ? existing : checkEmail)
-            res.status(400).json({ message: 'user already exists' })
+            //"existing", existing ? existing : checkEmail) 
+            res.status(400).json('user already exists' )
         } else {
             try {
                 //hasing password using bcrypt
@@ -26,12 +44,12 @@ const User_Controller = {
                 //'first', hashed)
 
                 const data = {
-                    Name: input.Name,
+                    Name: input.Name, 
                     Email: input.Email,
-                    Lastname: input.LastName,
+                    Lastname: input.LastName,  
                     Password: hashed,
 
-
+ 
 
                 }
                 const result = await DBC.saveUser(data);
@@ -43,15 +61,17 @@ const User_Controller = {
                     res.status(200).json(apiUpdate)
                 };
             } catch (error) {
-                res.status(500).json(error)
+                res.status(500).json("Enter Details")
             }
         }
 
-
+ 
 
     },
-    login: async (req, res, next) => {
+    login: async (req, res, next) => { 
         //"in", req.body)
+                         
+        if(!req.body.email ||!req.body.password)res.status(400).json('Invalid Details')
         try {
             const user = await DBC.findByEmail(req.body.email);
             //"user", user)
@@ -71,7 +91,7 @@ const User_Controller = {
                     } else {
 
                         //'Password is incorrect!');
-                        res.status(400).json('incorrect password')
+                        res.status(400).json('Incorrect password')
 
                     }
                 })
@@ -98,6 +118,7 @@ const User_Controller = {
             const allImages = await DBC.findImagesByUser(req.params.id)
 
             const image = sharp(req.file.path);
+            const unique=v4();
 
             // Generate thumbnail images of different sizes
             const thumbnailPromises = [
@@ -105,7 +126,7 @@ const User_Controller = {
                 { size: 800, prefix: 'medium' },
                 { size: 1200, prefix: 'large' }
             ].map(({ size, prefix }) => {
-                return image.clone().resize({ width: size }).toFile(`Uploads/${req.params.id}${prefix}.jpg`);
+                return image.clone().resize({ width: size }).toFile(`Uploads/${unique}${prefix}.jpg`);
             });
 
             // Wait for all thumbnail images to be generated
@@ -113,18 +134,19 @@ const User_Controller = {
                 .then(async () => {
                     // Send response with URL of original image and all thumbnail images
 
-                    const thumbnails = {
-                        original: `/Uploads/${req.params.id}.jpg`,
+                    const thumbnails = {  
+                        
                         thumbnails: {
-                            Small: `/Uploads/${req.params.id}small.jpg`,
-                            Medium: `/Uploads/${req.params.id}medium.jpg`,
-                            Large: `/Uploads/${req.params.id}large.jpg`
+                            Small: `/Uploads/${unique}small.jpg`,
+                            Medium: `/Uploads/${unique}medium.jpg`,
+                            Large: `/Uploads/${unique}large.jpg`
                         }
                     }
 
                     return thumbnails
 
                 }).then(async (res) => {
+                    console.log('thumbs ',res)
                     const result = await DBC.findAndUpdateWithThumb(save._id, res)
                     console.log("res", result)
 

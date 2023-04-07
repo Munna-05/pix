@@ -10,7 +10,6 @@ const Home = () => {
     const [allImages, setImages] = useState([])
     const userdetails = useSelector(state => state.userSignup.contents)
     const userUploads = useSelector(state => state.UserProfile.Images)
-    const images = useSelector(state => state.Images.Images)
 
 
     const dispatch = useDispatch()
@@ -18,12 +17,14 @@ const Home = () => {
     useEffect(() => {
         if (!userdetails) navigate('/')
            
+     
             axios.get(`${API_URL}/images/get_all`).then((res) => {
                 console.log(res.data)
 
                 dispatch(addImage(res.data))
 
             })
+        
            
     }, [userUploads])
 

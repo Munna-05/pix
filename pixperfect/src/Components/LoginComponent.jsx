@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { createUser } from '../Redux/Slice/UserSlice'
+import { createUser, logout } from '../Redux/Slice/UserSlice'
 import { loginUser, findUser } from '../Redux/Slice/UserSlice'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
@@ -14,10 +14,12 @@ const LoginComponent = () => {
 
     useEffect(() => {
         if (error) toast.error(error, { position: toast.POSITION.TOP_RIGHT,autoClose:1000,hideProgressBar:true })
+        dispatch(logout())
     }, [error])
 
 
     const loginNow = () => {
+       
         const data = {
             email: email,
             password: password
@@ -26,7 +28,6 @@ const LoginComponent = () => {
 
     }
     const user = useSelector(state => state.userSignup?.contents)
-    console.log(user)
     if (user) {
         localStorage.setItem('token', user._id)
         navigate('/home')

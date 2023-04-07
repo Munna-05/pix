@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {useDispatch,useSelector} from 'react-redux'
 import { createUser } from '../Redux/Slice/UserSlice'
+import { toast, ToastContainer } from 'react-toastify'
+import { logout } from '../Redux/Slice/UserSlice'
+import 'react-toastify/dist/ReactToastify.css';
 
 const SignupComponent = () => {
     const navigate = useNavigate()
@@ -10,24 +13,31 @@ const SignupComponent = () => {
     const [Lastname,setLastname] = useState('')
     const [Email,setEmail] = useState('')
     const [Passowrd,setPassword] = useState('')
+    const [Repass,setRepass] = useState('')
+    const error = useSelector(state => state.userSignup.error)
+    useEffect(() => {
+        if (error) toast.error(error, { position: toast.POSITION.TOP_RIGHT,autoClose:1000,hideProgressBar:true })
+        dispatch(logout())
+    }, [error])
 
     const Signup =()=>{
        const data={
             Name : Name,
             LastName:Lastname,
             Email:Email,
-            Password:Passowrd
+            Password:Passowrd,
+            Repassword:Repass
         }
         dispatch(createUser(data))
     }
     const user = useSelector(state=>state.userSignup?.contents)
-    console.log(user)
     if(user) {
         localStorage.setItem('token',user._id)
         navigate('/home')
-    }
+    }   
   return (
     <div>
+        <ToastContainer/>
          <div className=''>
            
            <div className='bg-[#a8c1d1]  h-[100vh]  flex items-center justify-center px-3'
@@ -43,7 +53,7 @@ const SignupComponent = () => {
                            </div>
                            <input onChange={(e)=>setEmail(e.target.value)} type="text" className='ring-1 ring-stone-600 px-3 text-sm  outline-none w-2/3 h-8 rounded-lg my-2' placeholder='Enter your Email' />
                            <input onChange={(e)=>setPassword(e.target.value)} type="password" className='ring-1 ring-stone-600 px-3 text-sm  outline-none w-2/3 h-8 rounded-lg my-2' placeholder='Enter your Password' />
-                           <input onChange={(e)=>setPassword(e.target.value)} type="password" className='ring-1 ring-stone-600 px-3 text-sm  outline-none w-2/3 h-8 rounded-lg my-2' placeholder='Enter your Password' />
+                           <input onChange={(e)=>setRepass(e.target.value)} type="password" className='ring-1 ring-stone-600 px-3 text-sm  outline-none w-2/3 h-8 rounded-lg my-2' placeholder='Re-Enter your Password' />
                        </div>
                        <div className='my-6'>
                            <button onClick={()=>Signup()} className='bg-[#6a87a5] lg:w-60 w-40 h-8 text-stone-100 hover:bg-blue-900  rounded'>Singup</button>

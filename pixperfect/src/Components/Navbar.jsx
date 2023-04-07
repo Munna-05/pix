@@ -4,6 +4,8 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useNavigate } from 'react-router-dom'
 import { logout } from '../Redux/Slice/UserSlice'
+import { reset } from '../Redux/Slice/UserUploaded'
+import { remove } from '../Redux/Slice/ImgSlice'
 import { useDispatch } from 'react-redux'
 
 const navigation = [
@@ -23,7 +25,8 @@ const Navbar = () => {
 
     const signout = () => {
         localStorage.removeItem('token')
-
+        dispatch(reset())
+        dispatch(remove())
         dispatch(logout())
         navigate('/')
     }

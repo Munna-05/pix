@@ -35,10 +35,6 @@ const verifyKey = async (req, res, next) => {
 
 }
 
-const createThumb =()=>{
-  console.log(req)
-}
-
 //signup
 router.post('/signup', User_Controller.signup)
 //login
@@ -52,9 +48,9 @@ router.post('/upload/:id', verifyKey, upload.single('image'), User_Controller.Im
 
 router.get('/images/get_all', User_Controller.getImages)
 
-router.get('/image/:imageId',User_Controller.getImagesByImageId)
+router.get('/image/:imageId', User_Controller.getImagesByImageId)
 
-router.get('/images/:id', User_Controller.getImagesByUser)
+router.get('/userprofile/:id', User_Controller.getImagesByUser)
 
 
 
