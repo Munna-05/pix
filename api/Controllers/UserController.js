@@ -93,11 +93,10 @@ const User_Controller = {
                     }
                 })
             } else {
-                //'error')
+
 
             }
         } catch (error) {
-            //error)
         }
     },
     get_user: async (req, res, next) => {
@@ -108,7 +107,7 @@ const User_Controller = {
             } catch (error) {
                 res.status(400).json(error)
             }
-        }else{
+        } else {
             res.status(400).json('invalid userid')
         }
     },
@@ -168,22 +167,28 @@ const User_Controller = {
         }
     },
     getImages: async (req, res) => {
-        //'received')
         try {
             const images = await DBC.findAllImages()
             if (images) res.status(200).json(images)
         } catch (err) {
-            //err)
             res.status(500).json(err)
         }
     },
     getImagesByUser: async (req, res) => {
+      try {
         const images = await DBC.findImagesByUser(req.params.id)
         if (images) res.status(200).json(images)
+      } catch (error) {
+        res.status(400).json(error)
+      }
     },
     getImagesByImageId: async (req, res) => {
+      try {
         const image = await DBC.findByImageId(req.params.imageId)
         if (image) res.status(200).json(image)
+      } catch (error) {
+        res.send(400).json(error)
+      }
     }
 
 

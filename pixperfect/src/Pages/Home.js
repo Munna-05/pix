@@ -19,8 +19,6 @@ const Home = () => {
            
      
             axios.get(`${API_URL}/images/get_all`).then((res) => {
-                console.log(res.data)
-
                 dispatch(addImage(res.data))
 
             })

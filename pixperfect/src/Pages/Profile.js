@@ -20,8 +20,6 @@ const Profile = () => {
         
            if(!userUploads){
             axios.get(`${API_URL}/userprofile/${userdetails?._id}`).then((res)=>{
-                console.log(userUploads?._id)
-                console.log("user images ",res.data)
                 dispatch(addImage(res.data))   
             })
            }
